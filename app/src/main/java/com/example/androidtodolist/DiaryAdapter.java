@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder> {
+public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ToDoViewHolder> {
 
-    public List<ToDo> Tasks;
+    public List<Diary> Tasks;
     private OnItemClicked onClick;
 
     public interface OnItemClicked {
@@ -28,7 +28,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
         this.onClick = onClick;
     }
 
-    public ToDoAdapter(Runnable mainActivity, List<ToDo> tasks) {
+    public DiaryAdapter(Runnable mainActivity, List<Diary> tasks) {
         Tasks = tasks;
     }
 
@@ -42,8 +42,8 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ToDoViewHolder
     @Override
     public void onBindViewHolder(@NonNull ToDoViewHolder holder, final int position) {
         holder.tvTitle.setText(Tasks.get(position).getTitle());
-//        holder.tvContent.setText(Tasks.get(position).getContent());
-//        holder.tvContent.setText(Tasks.get(position).getDatetime());
+        holder.tvContent.setText(Tasks.get(position).getContent());
+        holder.tvDate.setText(Tasks.get(position).getDatetime());
 
 
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,17 +16,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnItemClicked {
+public class MainActivity extends AppCompatActivity implements DiaryAdapter.OnItemClicked {
     RecyclerView recyclerviewUser;
     AppDatabase db;
-    ToDoAdapter toDoAdapter;
-    public static List<ToDo> Tasks;
+    DiaryAdapter diaryAdapter;
+    public static List<Diary> Tasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnIte
         btn_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertConfirm("Cofirm", "Would you like to add a new task ");
+                openAddScreen();
             }
         });
     }
@@ -56,16 +58,16 @@ public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnIte
 
     @SuppressLint("StaticFieldLeak")
     public void getandDisplayTask() {
-        new AsyncTask<Void, Void, List<ToDo>>() {
+        new AsyncTask<Void, Void, List<Diary>>() {
             @Override
-            protected List<ToDo> doInBackground(Void... voids) {
-                Tasks = db.toDoDao().getAll();
+            protected List<Diary> doInBackground(Void... voids) {
+                Tasks = db.diaryDao().getAll();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        toDoAdapter = new ToDoAdapter(this, Tasks);
-                        toDoAdapter.setOnClick(MainActivity.this);
-                        recyclerviewUser.setAdapter(toDoAdapter);
+                        diaryAdapter = new DiaryAdapter(this, Tasks);
+                        diaryAdapter.setOnClick(MainActivity.this);
+                        recyclerviewUser.setAdapter(diaryAdapter);
                     }
                 });
                 return null;
@@ -73,24 +75,24 @@ public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnIte
         }.execute();
     }
 
-    private void openAddTodoScreen() {
-        Intent intent = new Intent(MainActivity.this, Activity_Add_ToDoList.class);
+    private void openAddScreen() {
+        Intent intent = new Intent(MainActivity.this, AddDiaryActivity.class);
         startActivity(intent);
     }
 
-    private void openUpdateTodoScreen(ToDo todo) {
+    private void openUpdateScreen(Diary diary) {
         Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
-        intent.putExtra("id", todo.getId());
-        intent.putExtra("task", todo.getTitle());
-        intent.putExtra("content", todo.getContent());
-        intent.putExtra("date", todo.getDatetime());
+        intent.putExtra("id", diary.getId());
+        intent.putExtra("task", diary.getTitle());
+        intent.putExtra("content", diary.getContent());
+        intent.putExtra("date", diary.getDatetime());
 
         startActivity(intent);
     }
 
     @Override
     public void onClickItemUpdate(int position) {
-        openUpdateTodoScreen(Tasks.get(position));
+        openUpdateScreen(Tasks.get(position));
     }
 
     @Override
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnIte
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                db.toDoDao().delete(Tasks.get(position));
+                db.diaryDao().delete(Tasks.get(position));
                 Log.i("TAG", "delete success");
                 return null;
             }
@@ -108,31 +110,12 @@ public class MainActivity extends AppCompatActivity implements ToDoAdapter.OnIte
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                toDoAdapter.Tasks.remove(position);
-                toDoAdapter.notifyDataSetChanged();
+                diaryAdapter.Tasks.remove(position);
+                diaryAdapter.notifyDataSetChanged();
             }
         }.execute();
     }
 
-
-    private void showAlertConfirm(String title, String message) {
-        new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        openAddTodoScreen();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                })
-                .show();
-    }
 }
 
 

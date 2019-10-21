@@ -4,7 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class ToDo {
+public class Diary {
 
     @PrimaryKey(autoGenerate = true)
     public int id;
@@ -43,7 +43,7 @@ public class ToDo {
         return datetime;
     }
 
-    public ToDo(){
+    public Diary(){
         this.title = title;
         this.content = content;
         this.datetime = datetime;

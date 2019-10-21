@@ -9,37 +9,37 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=""
+        android:hint="title"
         android:textSize="30sp" />
     <TextView
         android:id="@+id/tvContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=""
+        android:hint="content"
         android:textSize="30sp" />
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text=""
+        android:hint="date"
         android:textSize="30sp" />
 
     <Button
-        android:id="@+id/deleteTask"
-        android:layout_width="50dp"
+        android:id="@+id/updateTask"
+        android:layout_width="70dp"
         android:layout_height="50dp"
         android:background="@drawable/circle"
-        android:drawableLeft="@android:drawable/ic_delete"
+        android:text="update"
         android:textColor="#fff" />
 
     <Button
-        android:id="@+id/updateTask"
-        android:layout_width="50dp"
+        android:id="@+id/deleteTask"
+        android:layout_width="70dp"
         android:layout_height="50dp"
         android:background="@drawable/circle"
-        android:drawableRight="@android:drawable/ic_menu_upload"
+        android:text="delete"
         android:textColor="#fff" />
 
 </LinearLayout>

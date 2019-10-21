@@ -47,12 +47,13 @@ public class UpdateActivity extends AppCompatActivity {
 
         int id = getIntent().getIntExtra("id", 0);
         taskId = id;
-        String task = getIntent().getStringExtra("task");
+        String title = getIntent().getStringExtra("task");
+        String content = getIntent().getStringExtra("content");
+        String date = getIntent().getStringExtra("date");
 
-        editTitle.setText(task);
-        editContent.setText(task);
-        editDate.setText(task);
-
+        editTitle.setText(title);
+        editContent.setText(content);
+        editDate.setText(date);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,17 +65,20 @@ public class UpdateActivity extends AppCompatActivity {
 
     @SuppressLint("StaticFieldLeak")
     private void updateTodoToDatabase() {
-        final String taskName = editTitle.getText().toString();
+        final String taskTitle = editTitle.getText().toString();
+        final String taskContent = editContent.getText().toString();
+        final String taskDate = editDate.getText().toString();
+
 
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                ToDo newTodo = new ToDo();
-                newTodo.setTitle(taskName);
-                newTodo.setContent(taskName);
-                newTodo.setDatetime(taskName);
-                newTodo.setId(taskId); // thinking about why we need to set id here
-                db.toDoDao().updateOne(newTodo);
+                Diary newDiary = new Diary();
+                newDiary.setTitle(taskTitle);
+                newDiary.setContent(taskContent);
+                newDiary.setDatetime(taskDate);
+                newDiary.setId(taskId);
+                db.diaryDao().updateOne(newDiary);
                 return null;
             }
 
